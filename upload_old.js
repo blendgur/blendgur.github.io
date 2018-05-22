@@ -99,4 +99,4 @@ document.getElementById('downloadImages').addEventListener('click', function(){
     for(var i = 0; i < images.length; i++){
         download(new Blob([images[i]]), 'blendFile' + i + '.png');
     }
-}, false);
+}, false); 
