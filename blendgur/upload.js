@@ -2,7 +2,7 @@
 var baseImageData,pngChunkType, pngEndData;
 
 var xhr = new XMLHttpRequest();
-xhr.open("GET", '/blendgur/base.png', true);
+xhr.open("GET", '/base.png', true);
 xhr.responseType = 'arraybuffer';
 xhr.onreadystatechange = function(event){
     if(this.readyState == 4 && this.status == 200){
@@ -26,17 +26,18 @@ function readBlendBlob(file, index){
             blendFileChunks[event.target.index] = event.target.result;
             fileCounter--;
             if(!fileCounter){
-                /*images = [];
-                for(var f = 0; f < blendFileChunks.length; f++){
-                    images[f] = makePNG(blendFileChunks[f]);
-                }*/
                 images = blendFileChunks.map(c => makePNG(c));
-                console.log(images);
                 uploadToBSEImgur(images);
             }
         }
     };
     reader.readAsArrayBuffer(file);
+}
+
+function verifyBlend(blob){
+    var header = new Uint8Array(blob.slice(0, 7));
+    if(header)
+    console.log(header);
 }
 
 function joinUint8Arr(arr1, arr2){
@@ -83,38 +84,58 @@ function uploadToBSEImgur(files){
             results = [results];
         }
         var idList = [];
-        console.log(results);
-        /*for(var r = 0; r < results.length; r++){
-            idList.push(results[r][0].match(/\w+\.png/)[0].slice(0, -4));
-        }*/
         idList = results.map(r => r[0].match(/\w+\.png/)[0].slice(0, -4));
         createPasteString(idList);
     });
 }
 
 function createPasteString(ids){
-    console.log(ids);
     var pasteString = "https://scottdmilner.github.io/blendgur/download?fileName=" + encodeURIComponent(fileName);
     for(var d = 0; d < ids.length; d++){
         pasteString += '&';
         pasteString += 'image' + d + '=' + ids[d];
     }
     document.getElementById("output").innerHTML = pasteString;
-    console.log(pasteString);
 }
 
-function blendSelectHandler(event){
+function checkFileHeader(file){
+    var blendHeader = 'BLENDER'
+    var reader = new FileReader();
+    return new Promise(function(resolve, reject){
+        reader.onerror = function(){
+            reject(new DOMException("Problem parsing .blend file"));
+        };
+        reader.onloadend = function(event){
+            if(event.target.readyState == FileReader.DONE){
+                if(event.target.result.slice(0,7) == blendHeader){
+                    resolve(true);
+                }else{
+                    resolve(false);
+                }
+            }
+        };
+        reader.readAsBinaryString(file);
+    });
+}
+
+async function blendSelectHandler(event){
     blendFileChunks = [];
     var blendFile = event.target.files[0];
     fileName = blendFile.name;
-    var chunkSize = 2000000 - baseImageData.length - 25;
-    var blobList = [];
-    for(var b = 0; b < blendFile.size; b += chunkSize){
-        blobList.push(blendFile.slice(b, b + chunkSize));
-    }
-    fileCounter = blobList.length;
-    for(var j = 0; j < blobList.length; j++){
-        readBlendBlob(blobList[j], j);
+    //verify .blend file header
+    if(await checkFileHeader(blendFile) && /\.blend\d*$/.test(fileName)){
+        var chunkSize = 2000000 - baseImageData.length - 25;
+        var blobList = [];
+        for(var b = 0; b < blendFile.size; b += chunkSize){
+            blobList.push(blendFile.slice(b, b + chunkSize));
+        }
+        fileCounter = blobList.length;
+        for(var j = 0; j < blobList.length; j++){
+            readBlendBlob(blobList[j], j);
+        }
+    }else{
+        console.error('Invalid .blend File!');
+        //do other stuff
     }
 }
 
