@@ -2,7 +2,7 @@
 var baseImageData,pngChunkType, pngEndData;
 
 var xhr = new XMLHttpRequest();
-xhr.open("GET", '/base.png', true);
+xhr.open("GET", '/blendgur/base.png', true);
 xhr.responseType = 'arraybuffer';
 xhr.onreadystatechange = function(event){
     if(this.readyState == 4 && this.status == 200){
