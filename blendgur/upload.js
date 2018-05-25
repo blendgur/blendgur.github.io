@@ -99,7 +99,8 @@ function createPasteString(ids){
 }
 
 function checkFileHeader(file){
-    var blendHeader = 'BLENDER'
+    var blendHeader = [66,76,69,78,68,69,82];//'BLENDER';
+    var gzipHeader = [31,139]; //1F 8B
     var reader = new FileReader();
     return new Promise(function(resolve, reject){
         reader.onerror = function(){
@@ -107,14 +108,12 @@ function checkFileHeader(file){
         };
         reader.onloadend = function(event){
             if(event.target.readyState == FileReader.DONE){
-                if(event.target.result.slice(0,7) == blendHeader){
-                    resolve(true);
-                }else{
-                    resolve(false);
-                }
+                var blendView = new DataView(event.target.result, 0, 7);
+                var gzipView = new DataView(event.target.result, 0, 2);
+                resolve(blendHeader.reduce((acc, curr, i) => acc && curr == blendView.getUint8(i), true) || gzipHeader.reduce((acc, curr, i) => acc && curr == gzipView.getUint8(i), true));
             }
         };
-        reader.readAsBinaryString(file);
+        reader.readAsArrayBuffer(file);
     });
 }
 
