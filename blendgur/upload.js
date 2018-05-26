@@ -1,5 +1,5 @@
 /*global $*/
-var baseImageData,pngChunkType, pngEndData;
+var baseImageData, pngChunkType, pngEndData;
 
 var xhr = new XMLHttpRequest();
 xhr.open("GET", '/blendgur/base.png', true);
@@ -15,7 +15,6 @@ xhr.send();
 
 var fileName = "",
     blendFileChunks = [],
-    images = [],
     fileCounter = 0;
 
 function readBlendBlob(file, index){
@@ -25,19 +24,11 @@ function readBlendBlob(file, index){
         if(event.target.readyState == FileReader.DONE){ //DONE == 2
             blendFileChunks[event.target.index] = event.target.result;
             fileCounter--;
-            if(!fileCounter){
-                images = blendFileChunks.map(c => makePNG(c));
-                uploadToBSEImgur(images);
-            }
+            if(!fileCounter)
+                uploadToBSEImgur(blendFileChunks.map(c => makePNG(c)));
         }
     };
     reader.readAsArrayBuffer(file);
-}
-
-function verifyBlend(blob){
-    var header = new Uint8Array(blob.slice(0, 7));
-    if(header)
-    console.log(header);
 }
 
 function joinUint8Arr(arr1, arr2){
@@ -53,7 +44,8 @@ function makePNG(buffer){
     var checksum = new Uint8Array(4); //hopefully the CRC doesn't need to be correct for this chunk
     var data = new Uint8Array(buffer);
     
-    var imageArr = joinUint8Arr(joinUint8Arr(joinUint8Arr(joinUint8Arr(joinUint8Arr(baseImageData, lengthData), pngChunkType), data), checksum), pngEndData);
+    //var imageArr = joinUint8Arr(joinUint8Arr(joinUint8Arr(joinUint8Arr(joinUint8Arr(baseImageData, lengthData), pngChunkType), data), checksum), pngEndData);
+    var imageArr = [baseImageData, lengthData, pngChunkType, data, checksum, pngEndData].reduce(joinUint8Arr);
     return imageArr;
 }
 
@@ -61,7 +53,6 @@ function uploadToBSEImgur(files){
     var hostedIDs = [],
         seUrl = "https://blender.stackexchange.com/upload/image",
         proxyUrl = "https://cors-anywhere.herokuapp.com/";
-    
     for(var f = 0; f < files.length; f++){
         var form = new FormData(),
             settings = {
@@ -80,32 +71,29 @@ function uploadToBSEImgur(files){
     }
     $.when.apply($, hostedIDs).done(function(){
         var results = [].slice.call(arguments);
-        if(typeof results[0] !== "object"){
+        if(typeof results[0] !== "object")
             results = [results];
-        }
-        var idList = [];
-        idList = results.map(r => r[0].match(/\w+\.png/)[0].slice(0, -4));
+        var idList = results.map(r => r[0].match(/\w+\.png/)[0].slice(0, -4));
         createPasteString(idList);
     });
 }
 
 function createPasteString(ids){
-    var pasteString = "https://scottdmilner.github.io/blendgur/download?fileName=" + encodeURIComponent(fileName);
+    var pasteString = "https://scottdmilner.github.io/blendgur/download?";
+    pasteString += "fileName=" + encodeURIComponent(fileName);
+    pasteString +="&pngLength=" + encodeURIComponent(baseImageData.length);
     for(var d = 0; d < ids.length; d++){
-        pasteString += '&';
-        pasteString += 'image' + d + '=' + ids[d];
+        pasteString += '&image' + d + '=' + ids[d];
     }
     document.getElementById("output").innerHTML = pasteString;
 }
 
 function checkFileHeader(file){
-    var blendHeader = [66,76,69,78,68,69,82];//'BLENDER';
-    var gzipHeader = [31,139]; //1F 8B
+    var blendHeader = [66, 76, 69, 78, 68, 69, 82];//'BLENDER';
+    var gzipHeader = [31, 139]; //1F 8B
     var reader = new FileReader();
     return new Promise(function(resolve, reject){
-        reader.onerror = function(){
-            reject(new DOMException("Problem parsing .blend file"));
-        };
+        reader.onerror = () => reject(new DOMException("Problem parsing .blend file"));
         reader.onloadend = function(event){
             if(event.target.readyState == FileReader.DONE){
                 var blendView = new DataView(event.target.result, 0, 7);
