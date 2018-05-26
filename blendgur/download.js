@@ -2,21 +2,21 @@
 var blendBuffer,
     counter = 0,
     decodedBlend = [];
-function imagesHandler(images){
+function imagesHandler(images, trimLength){
     counter = images.length;
     for(var i = 0; i < images.length; i++){
-        readImageBlob(event, images[i], i);
+        readImageBlob(event, images[i], i, trimLength);
     }
 }
 
-function readImageBlob(event, image, index){
+function readImageBlob(event, image, index, trimLength){
     var reader = new FileReader();
     reader.index = index;
     reader.onloadend = function(event){
         if(event.target.readyState == FileReader.DONE){
             var imageBuffer = event.target.result;
             var imageTyped = new Uint8Array(imageBuffer);
-            var blendData = imageTyped.slice(673, imageTyped.length - 16);
+            var blendData = imageTyped.slice(trimLength, imageTyped.length - 16);
             decodedBlend[event.target.index] = blendData;
             counter--;
             if(!counter){
@@ -82,7 +82,7 @@ window.onload = function(){
             if(typeof results[1] == "string"){
                 results = [results];
             }
-            imagesHandler(results.map(x => x[0]));
+            imagesHandler(results.map(x => x[0]), params['pngLength']);
         });
     }else{
         console.warn("No Query String!");
