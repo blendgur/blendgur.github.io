@@ -1,4 +1,3 @@
-/*global $*/
 var blendBuffer,
     counter = 0,
     decodedBlend = [];
@@ -60,6 +59,8 @@ window.onload = function(){
             var keyPair = arr[q].split('=');
             params[keyPair[0]] = keyPair[1];
         }
+        document.title = "blendgur: download " + params['fileName'];
+        
         var i = 0,
             images = [];
         while(params['image' + i]){

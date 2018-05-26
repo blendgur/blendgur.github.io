@@ -1,8 +1,8 @@
-/*global $*/
+
 var baseImageData, pngChunkType, pngEndData;
 
 var xhr = new XMLHttpRequest();
-xhr.open("GET", '/blendgur/base.png', true);
+xhr.open("GET", '/blendgur/img/base.png', true);
 xhr.responseType = 'arraybuffer';
 xhr.onreadystatechange = function(event){
     if(this.readyState == 4 && this.status == 200){
@@ -43,10 +43,7 @@ function makePNG(buffer){
     var lengthData = new Uint8Array([(chunkLength >> 24) % 256, (chunkLength >> 16) % 256, (chunkLength >> 8) % 256, chunkLength % 256]);
     var checksum = new Uint8Array(4); //hopefully the CRC doesn't need to be correct for this chunk
     var data = new Uint8Array(buffer);
-    
-    //var imageArr = joinUint8Arr(joinUint8Arr(joinUint8Arr(joinUint8Arr(joinUint8Arr(baseImageData, lengthData), pngChunkType), data), checksum), pngEndData);
-    var imageArr = [baseImageData, lengthData, pngChunkType, data, checksum, pngEndData].reduce(joinUint8Arr);
-    return imageArr;
+    return imageArr = [baseImageData, lengthData, pngChunkType, data, checksum, pngEndData].reduce(joinUint8Arr);
 }
 
 function uploadToBSEImgur(files){
@@ -81,7 +78,7 @@ function uploadToBSEImgur(files){
 function createPasteString(ids){
     var pasteString = "https://scottdmilner.github.io/blendgur/download?";
     pasteString += "fileName=" + encodeURIComponent(fileName);
-    pasteString +="&pngLength=" + encodeURIComponent(baseImageData.length);
+    pasteString += "&pngLength=" + encodeURIComponent(baseImageData.length);
     for(var d = 0; d < ids.length; d++){
         pasteString += '&image' + d + '=' + ids[d];
     }
@@ -89,7 +86,7 @@ function createPasteString(ids){
 }
 
 function checkFileHeader(file){
-    var blendHeader = [66, 76, 69, 78, 68, 69, 82];//'BLENDER';
+    var blendHeader = [66, 76, 69, 78, 68, 69, 82]; //'BLENDER';
     var gzipHeader = [31, 139]; //1F 8B
     var reader = new FileReader();
     return new Promise(function(resolve, reject){

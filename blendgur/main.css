@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body{
+    background-color: #1b1b1b;
+    margin: auto;
+    max-width: 44em;
+    padding: 1em;
+}
+
+h1{
+    font-family: 'Open Sans', sans-serif;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+h1 img{
+    vertical-align: bottom;
+    height: 3em;
+}
+
+a:link{
+    color: #f67a36;
+    transition: color .5s;
+    text-decoration: none;
+}
+
+a:visited{
+    color: #f67a36;
+}
+
+a:hover{
+    color: #ff9860;
+}
