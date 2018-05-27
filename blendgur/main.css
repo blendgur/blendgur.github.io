@@ -31,3 +31,51 @@ a:visited{
 a:hover{
     color: #ff9860;
 }
+
+.dropZone{
+    width: 36em;
+    height: 24em;
+    background-color: #444;
+    margin: auto;
+    border-radius: 1em;
+    outline: 4px dashed #888;
+    outline-offset: 2px;
+    transition: background-color 0.5s;
+}
+.dropZone:hover{
+    background-color: #555;
+}
+.dropZone svg{
+    display: block;
+    position: relative;
+    top: -85%;
+    margin: auto;
+    z-index: 1;
+}
+.header{
+    margin: auto;
+    padding: 1em 3em;
+}
+.fileUpload{
+    margin: auto;
+    vertical-align: middle;
+    width: 96%;
+    padding: 32% 2%;
+    display: inline-block;
+    text-align: center;
+    opacity: 0;
+    cursor: pointer;
+}
+.fileUpload + label{
+    display: block;
+    position: relative;
+    top: -55%;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'Open Sans', sans-serif;
+    color: #fff;
+    font-size: 1.2em;
+    z-index: 3;
+}
