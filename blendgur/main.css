@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
 
 body{
     background-color: #1b1b1b;
@@ -29,11 +30,11 @@ a:visited{
 }
 
 a:hover{
-    color: #ff9860;
+    color: #ff9156;
 }
 
 .dropZone{
-    width: 36em;
+    width: 82%;
     height: 24em;
     background-color: #444;
     margin: auto;
@@ -41,16 +42,25 @@ a:hover{
     outline: 4px dashed #888;
     outline-offset: 2px;
     transition: background-color 0.5s;
-}
-.dropZone:hover{
-    background-color: #555;
+    position: relative;
 }
 .dropZone svg{
     display: block;
-    position: relative;
-    top: -85%;
-    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     z-index: 1;
+    transition: top .5s;
+    transform: translateY(-50%);
+}
+.active:hover svg{
+    top: 45%;
+}
+.active:hover{
+    background-color: #555;
 }
 .header{
     margin: auto;
@@ -65,17 +75,99 @@ a:hover{
     text-align: center;
     opacity: 0;
     cursor: pointer;
-}
-.fileUpload + label{
-    display: block;
+    z-index: 99;
     position: relative;
-    top: -55%;
-    left: 0px;
-    width: 100%;
+}
+.dropZone > label, #message{
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
     text-align: center;
     vertical-align: middle;
     font-family: 'Open Sans', sans-serif;
-    color: #fff;
     font-size: 1.2em;
     z-index: 3;
+    color: #fff;
+    transform: translateY(-50%);
+}
+button{
+    display: inline-block;
+    background-color: #0f5590;
+    border-radius: 2px;
+    border: 3px solid #53a2e2;
+    color: white;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1em;
+    padding: 6px 40px;
+    margin: 6px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    z-index: 7;
+}
+.uploadButton:hover{
+    background-color: #2a77b7;
+}
+#markdown{
+    background-color: #0b0b0b;
+    color: white;
+    border-radius: 4px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.7em;
+    word-wrap: break-word;
+    padding: 12px;
+    margin: 16px;
+    transform: rotate(0deg);
+    animation: wiggle linear 0.2s 4.5 running alternate;
+}
+.loadingMessage:after{
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    animation: ellipsis steps(4, end) 1.5s infinite;
+    content: '\00a0\2e\00a0\2e\00a0\2e';
+    width: 0em;
+    margin-right: 2.2em;
+}
+.disclaimer{
+    width: 76%;
+    font-size: 0.8em;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    margin: auto;
+    padding: 1.5em 0;
+}
+#downloadBlend{
+    width: 100%;
+    height: 24em;
+    opacity: 0;
+    margin: auto;
+    position: relative;
+    display: block;
+    z-index: 16;
+}
+code{
+    font-family: 'Source Code Pro', monospace;
+}
+#message{
+    font-size: 1.5em;
+}
+@keyframes ellipsis{
+    to{
+        width: 2.2em;
+        margin-right: 0em;
+    }
+}
+@keyframes wiggle{
+    from{
+        transform: rotate(-5deg);
+    }
+    to{
+        transform: rotate(5deg);
+    }
 }

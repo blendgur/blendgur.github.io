@@ -34,7 +34,15 @@ function compileBlend(data){
     }
     
     blendBuffer = blendTyped.buffer;
-    document.getElementById("downloadBlend").disabled = false;
+    //document.getElementById("downloadBlend").disabled = false;
+    $('#message').removeClass('loadingMessage');
+    $('#downloadBlend').css('cursor', 'pointer');
+    $('.dropZone').addClass('active');
+    $('svg').addClass('active');
+    $('#message').html('Click to download ' + params['fileName']);
+    document.getElementById('downloadBlend').addEventListener('click', function(){
+        download(new Blob([blendBuffer]), params['fileName']);
+    });
 }
 
 function download(buffer, filename){
@@ -86,11 +94,9 @@ window.onload = function(){
             imagesHandler(results.map(x => x[0]), params['pngLength']);
         });
     }else{
-        console.warn("No Query String!");
+        console.error("No Query String!");
+        $('.loadingMessage').hide();
+        $('.errorMessage').html('Error getting <code>.blend</code>: No query string in URL');
+        $('.errorMessage').show();
     }
 };
-
-
-document.getElementById('downloadBlend').addEventListener('click', function(){
-    download(new Blob([blendBuffer]), params['fileName']);
-});

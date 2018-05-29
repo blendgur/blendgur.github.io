@@ -7,21 +7,31 @@
     </head>
     <body>
         <div class="header">
-            <h1>&nbsp;&nbsp;&nbsp;Welcome to</h1>
+            <!--<h1>&nbsp;&nbsp;&nbsp;Welcome to</h1>-->
+            <h1>Get the <code>.blend</code> from</h1>
             <h1><img src="/blendgur/img/logo1.png"></img> a .blend hosting site for <a href="https://blender.stackexchange.com">Blender.SE</a></h1>
         </div>
-        <div class="dropZone">
+        <div class="dropZone active">
             <input type="file" class="fileUpload" id="uploadBlend"/>
-            <label for="uploadBlend" class="uploadMessage">Drag a .blend file here or click to browse</label>
-            <label for="uploadBlend" class="loadedMessage" hidden>test</label>
-            <label for="uploadBlend" class="successMessage" hidden>test2</label>
+            <label for="uploadBlend" class="uploadMessage">Drag a <code>.blend</code> file here or click to browse</label>
+            <label for="uploadBlend" class="checkMessage" style="display: none">
+                <button id="upload" onclick="uploadBlend(blendFile)">Upload!</button>
+            </label>
+            <label for="uploadBlend" class="loadingMessage" style="display: none; font-size: 2em">Loading</label>
+            <label for="uploadBlend" class="successMessage" style="display: none">
+                <a style="color: #14bc55; font-size: 1.5em"><strong>Success!</strong><br></a>
+                Please copy the following Markdown code into your post:
+            </label>
+            <label for="uploadBlend" class="errorMessage" style="display: none; color: #f64c35"></label>
             <!-- Modified Google material.io icon -->
-            <svg style="fill:#333" width="200" height="200" viewBox="0 0 24 24">
+            <svg class="active" style="fill:#333" width="200" height="200" viewBox="0 0 24 24">
                 <path d="M 19 12 L 19 19 L 5 19 L 5 12 L 3 12 L 3 19 C 3 20.1 3.9 21 5 21 L 19 21 C 20.1 21 21 20.1 21 19 L 21 12 L 19 12 Z"></path>
                 <path d="M 13 12.67 L 15.59 10.09 L 17 11.5 L 12 16.5 L 7 11.5 L 8.41 10.09 L 11 12.67 L 11 3 L 13 3 Z" transform="matrix(-1 0 0 -1 24 19.5)"></path>
             </svg>
         </div>
-        <p id="output"></p>
+        <div class="disclaimer">
+            All <code>.blend</code> files are licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/">cc by-sa 3.0 with attribution required</a> and subject to StackExchange's <a href="https://stackoverflow.com/legal/content-policy">content policy</a>.
+        </div>
         <script type="text/javascript" src="/blendgur/upload.js"></script>
     </body>
 </html>

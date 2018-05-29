@@ -1,5 +1,4 @@
-
-var baseImageData, pngChunkType, pngEndData;
+var blendFile, baseImageData, pngChunkType, pngEndData;
 
 var xhr = new XMLHttpRequest();
 xhr.open("GET", '/blendgur/img/base.png', true);
@@ -43,7 +42,7 @@ function makePNG(buffer){
     var lengthData = new Uint8Array([(chunkLength >> 24) % 256, (chunkLength >> 16) % 256, (chunkLength >> 8) % 256, chunkLength % 256]);
     var checksum = new Uint8Array(4); //hopefully the CRC doesn't need to be correct for this chunk
     var data = new Uint8Array(buffer);
-    return imageArr = [baseImageData, lengthData, pngChunkType, data, checksum, pngEndData].reduce(joinUint8Arr);
+    return [baseImageData, lengthData, pngChunkType, data, checksum, pngEndData].reduce(joinUint8Arr);
 }
 
 function uploadToBSEImgur(files){
@@ -82,7 +81,11 @@ function createPasteString(ids){
     for(var d = 0; d < ids.length; d++){
         pasteString += '&image' + d + '=' + ids[d];
     }
-    document.getElementById("output").innerHTML = pasteString;
+    //document.getElementById("output").innerHTML = pasteString;
+    $('.successMessage').append('<div id="markdown">' + pasteString + '</div>');
+    $('.loadingMessage').hide();
+    $('.successMessage').show();
+    window.getSelection().selectAllChildren(document.getElementById('markdown'));
 }
 
 function checkFileHeader(file){
@@ -102,24 +105,67 @@ function checkFileHeader(file){
     });
 }
 
-async function blendSelectHandler(event){
+function uploadBlend(blendFile){
+    $('.checkMessage').hide();
+    $('.loadingMessage').show();
     blendFileChunks = [];
-    var blendFile = event.target.files[0];
+    var chunkSize = 2000000 - baseImageData.length - 25;
+    var blobList = [];
+    for(var b = 0; b < blendFile.size; b += chunkSize){
+        blobList.push(blendFile.slice(b, b + chunkSize));
+    }
+    fileCounter = blobList.length;
+    for(var j = 0; j < blobList.length; j++){
+        readBlendBlob(blobList[j], j);
+    }
+}
+
+function toggleZone(bool){
+    if(bool){
+        $('.dropZone').addClass('active');
+        $('svg').addClass('active');
+        $('#uploadBlend').prop('disabled', false)
+        $('.fileUpload').css({'z-index': 99, 'cursor': 'pointer'});
+    }else{
+        $('.dropZone').removeClass('active');
+        $('svg').removeClass('active');
+        $('#uploadBlend').prop('disabled', true);
+        $('.fileUpload').css({'z-index': 0, 'cursor': 'auto'});
+    }
+}
+function resetPage(){
+    $('.checkMessage').hide();
+    $('.loadingMessage').hide();
+    $('.successMessage').hide();
+    $('.errorMessage').hide();
+    setTimeout(toggleZone, 5, true);
+    $('.uploadMessage').show();
+}
+
+async function blendSelectHandler(event){
+    blendFile = event.target.files[0];
     fileName = blendFile.name;
     //verify .blend file header
-    if(await checkFileHeader(blendFile) && /\.blend\d*$/.test(fileName)){
-        var chunkSize = 2000000 - baseImageData.length - 25;
-        var blobList = [];
-        for(var b = 0; b < blendFile.size; b += chunkSize){
-            blobList.push(blendFile.slice(b, b + chunkSize));
-        }
-        fileCounter = blobList.length;
-        for(var j = 0; j < blobList.length; j++){
-            readBlendBlob(blobList[j], j);
-        }
+    if(blendFile.size > 25000000){
+        console.error('.blend file too large!');
+        $('.uploadMessage').hide();
+        toggleZone(false);
+        $('.errorMessage').html('Error uploading file. File size exceeds 25MB<br><button id="reset" onmouseup="resetPage()">Try again</button>');
+        $('.errorMessage').show();
     }else{
-        console.error('Invalid .blend File!');
-        //do other stuff
+        if(await checkFileHeader(blendFile) && /\.blend\d*$/.test(fileName)){
+            $('.uploadMessage').hide();
+            $('.errorMessage').hide();
+            toggleZone(false);
+            $('.checkMessage').prepend('Please check the following details:<br><br><strong>file:</strong>  ' + fileName + '<br><strong>size:</strong>  ' + Math.round(blendFile.size / 1000) / 100 + 'MB<br><br>');
+            $('.checkMessage').show();
+        }else{
+            console.error('Invalid .blend File!');
+            $('.uploadMessage').hide();
+            toggleZone(false);
+            $('.errorMessage').html('Error uploading file. Please check that you have selected a .blend file<br><button id="reset" onmouseup="resetPage()">Try again</button>');
+            $('.errorMessage').show();
+        }
     }
 }
 
