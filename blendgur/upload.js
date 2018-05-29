@@ -75,13 +75,13 @@ function uploadToBSEImgur(files){
 }
 
 function createPasteString(ids){
-    var pasteString = "https://scottdmilner.github.io/blendgur/download?";
-    pasteString += "fileName=" + encodeURIComponent(fileName);
-    pasteString += "&pngLength=" + encodeURIComponent(baseImageData.length);
+    var pasteString = '[<img src="https://scottdmilner.github.io/blendgur/img/embedImage.png"/>](https://scottdmilner.github.io/blendgur/download?';
+    pasteString += "fn=" + encodeURIComponent(fileName);
+    pasteString += "&pl=" + encodeURIComponent(baseImageData.length);
     for(var d = 0; d < ids.length; d++){
-        pasteString += '&image' + d + '=' + ids[d];
+        pasteString += '&i' + d + '=' + ids[d];
     }
-    //document.getElementById("output").innerHTML = pasteString;
+    pasteString += ")";
     $('.successMessage').append('<div id="markdown">' + pasteString + '</div>');
     $('.loadingMessage').hide();
     $('.successMessage').show();

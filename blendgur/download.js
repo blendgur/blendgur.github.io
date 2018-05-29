@@ -39,9 +39,9 @@ function compileBlend(data){
     $('#downloadBlend').css('cursor', 'pointer');
     $('.dropZone').addClass('active');
     $('svg').addClass('active');
-    $('#message').html('Click to download ' + params['fileName']);
+    $('#message').html('Click to download ' + params['fn']);
     document.getElementById('downloadBlend').addEventListener('click', function(){
-        download(new Blob([blendBuffer]), params['fileName']);
+        download(new Blob([blendBuffer]), params['fn']);
     });
 }
 
@@ -67,15 +67,15 @@ window.onload = function(){
             var keyPair = arr[q].split('=');
             params[keyPair[0]] = keyPair[1];
         }
-        document.title = "blendgur: download " + params['fileName'];
+        document.title = "blendgur: download " + params['fn'];
         
         var i = 0,
             images = [];
-        while(params['image' + i]){
+        while(params['i' + i]){
             var settings = {
                 "async": true,
                 "crossDomain": true,
-                "url": proxyUrl + 'https://i.stack.imgur.com/' + params['image' + i] + '.png',
+                "url": proxyUrl + 'https://i.stack.imgur.com/' + params['i' + i] + '.png',
                 "method": 'GET',
                 "xhr": function(){
                     var xhr = new XMLHttpRequest();
@@ -91,7 +91,7 @@ window.onload = function(){
             if(typeof results[1] == "string"){
                 results = [results];
             }
-            imagesHandler(results.map(x => x[0]), params['pngLength']);
+            imagesHandler(results.map(x => x[0]), params['pl']);
         });
     }else{
         console.error("No Query String!");
