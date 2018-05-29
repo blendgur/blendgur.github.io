@@ -75,7 +75,7 @@ function uploadToBSEImgur(files){
 }
 
 function createPasteString(ids){
-    var pasteString = '[<img src="https://scottdmilner.github.io/blendgur/img/embedImage.png"/>](https://scottdmilner.github.io/blendgur/download?';
+    var pasteString = '[&lt;img src="https://scottdmilner.github.io/blendgur/img/embedImage.png"/&gt;](https://scottdmilner.github.io/blendgur/download?';
     pasteString += "fn=" + encodeURIComponent(fileName);
     pasteString += "&pl=" + encodeURIComponent(baseImageData.length);
     for(var d = 0; d < ids.length; d++){
