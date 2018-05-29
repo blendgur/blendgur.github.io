@@ -157,7 +157,7 @@ async function blendSelectHandler(event){
             $('.uploadMessage').hide();
             $('.errorMessage').hide();
             toggleZone(false);
-            $('.checkMessage').prepend('Please check the following details:<br><br><strong>file:</strong>  ' + fileName + '<br><strong>size:</strong>  ' + Math.round(blendFile.size / 1000) / 100 + 'MB<br><br>');
+            $('.checkMessage').prepend('Please check the following details:<br><br><strong>file:</strong>  ' + fileName + '<br><strong>size:</strong>  ' + Math.round(blendFile.size / 10000) / 100 + 'MB<br><br>');
             $('.checkMessage').show();
         }else{
             console.error('Invalid .blend File!');
