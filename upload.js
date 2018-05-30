@@ -171,4 +171,18 @@ async function blendSelectHandler(event){
     }
 }
 
+window.onload = function(){
+    try{
+        eval('async () => {}');
+    }catch(e){
+        if(e instanceof SyntaxError){
+            $('.errorMessage').html('Your browser is unsupported. Please upgrade your browser.');
+            $('.uploadMessage').hide();
+            toggleZone(false);
+            $('.errorMessage').show();
+        }
+        else throw e;
+    }
+};
+
 document.getElementById('uploadBlend').addEventListener('change', blendSelectHandler, false);
