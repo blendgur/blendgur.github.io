@@ -39,8 +39,9 @@ function joinUint8Arr(arr1, arr2){
 
 function makePNG(buffer){
     var chunkLength = buffer.length;
-    var lengthData = new Uint8Array([(chunkLength >> 24) % 256, (chunkLength >> 16) % 256, (chunkLength >> 8) % 256, chunkLength % 256]);
-    var checksum = new Uint8Array(4); //hopefully the CRC doesn't need to be correct for this chunk
+    //var lengthData = new Uint8Array([(chunkLength >> 24) % 256, (chunkLength >> 16) % 256, (chunkLength >> 8) % 256, chunkLength % 256]);
+    var lengthData = new Uint8Array([3, 2, 1, 0].map(x => (chunkLength >> (8*x)) % 256));
+    var checksum = new Uint8Array(4); //imgur doesn't care if the CRC isn't correct
     var data = new Uint8Array(buffer);
     return [baseImageData, lengthData, pngChunkType, data, checksum, pngEndData].reduce(joinUint8Arr);
 }
@@ -77,7 +78,8 @@ function uploadToBSEImgur(files){
 function createPasteString(ids){
     var pasteString = '[&lt;img src="https://scottdmilner.github.io/blendgur/img/embedImage.png"/&gt;](https://scottdmilner.github.io/blendgur/download?';
     pasteString += "fn=" + encodeURIComponent(fileName);
-    pasteString += "&pl=" + encodeURIComponent(baseImageData.length);
+    pasteString += "&pl=" + encodeURIComponent(baseImageData.length + 8);
+    console.log(baseImageData.length);
     for(var d = 0; d < ids.length; d++){
         pasteString += '&i' + d + '=' + ids[d];
     }
