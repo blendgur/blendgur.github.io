@@ -1,7 +1,7 @@
 var blendFile, baseImageData, pngChunkType, pngEndData;
 
 var xhr = new XMLHttpRequest();
-xhr.open("GET", '/blendgur/img/base.png', true);
+xhr.open("GET", '/img/base.png', true);
 xhr.responseType = 'arraybuffer';
 xhr.onreadystatechange = function(event){
     if(this.readyState == 4 && this.status == 200){
@@ -76,7 +76,7 @@ function uploadToBSEImgur(files){
 }
 
 function createPasteString(ids){
-    var pasteString = '[&lt;img src="https://scottdmilner.github.io/blendgur/img/embedImage.png"/&gt;](https://scottdmilner.github.io/blendgur/download?';
+    var pasteString = '[&lt;img src="https://blendgur.github.io/img/embedImage.png"/&gt;](https://blendgur.github.io/download?';
     pasteString += "fn=" + encodeURIComponent(fileName);
     pasteString += "&pl=" + encodeURIComponent(baseImageData.length + 8);
     console.log(baseImageData.length);
