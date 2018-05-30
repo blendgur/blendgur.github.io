@@ -1,7 +1,7 @@
 var blendBuffer,
     counter = 0,
     decodedBlend = [];
-function imagesHandler(images, trimLength){
+function imagesHandler(event, images, trimLength){
     counter = images.length;
     for(var i = 0; i < images.length; i++){
         readImageBlob(event, images[i], i, trimLength);
@@ -91,7 +91,11 @@ window.onload = function(){
             if(typeof results[1] == "string"){
                 results = [results];
             }
-            imagesHandler(results.map(x => x[0]), params['pl']);
+            /*var results = event;
+            if(typeof results !== "object"){
+                results = [event];
+            }*/
+            imagesHandler(event, results.map(x => x[0]), params['pl']);
         });
     }else{
         console.error("No Query String!");
