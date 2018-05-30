@@ -86,7 +86,7 @@ window.onload = function(){
             images.push($.ajax(settings));
             i++;
         }
-        $.when.apply($, images).done(function(){
+        $.when.apply($, images).done(function(event){
             var results = [].slice.call(arguments);
             if(typeof results[1] == "string"){
                 results = [results];
