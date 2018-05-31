@@ -39,7 +39,6 @@ function joinUint8Arr(arr1, arr2){
 
 function makePNG(buffer){
     var chunkLength = buffer.length;
-    //var lengthData = new Uint8Array([(chunkLength >> 24) % 256, (chunkLength >> 16) % 256, (chunkLength >> 8) % 256, chunkLength % 256]);
     var lengthData = new Uint8Array([3, 2, 1, 0].map(x => (chunkLength >> (8*x)) % 256));
     var checksum = new Uint8Array(4); //imgur doesn't care if the CRC isn't correct
     var data = new Uint8Array(buffer);
