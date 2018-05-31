@@ -34,14 +34,13 @@ function compileBlend(data){
     }
     
     blendBuffer = blendTyped.buffer;
-    //document.getElementById("downloadBlend").disabled = false;
     $('#message').removeClass('loadingMessage');
     $('#downloadBlend').css('cursor', 'pointer');
     $('.dropZone').addClass('active');
     $('svg').addClass('active');
-    $('#message').html('Click to download <code>' + params['fn'] + '</code> (' + Math.round(blendLength / 10000) / 100 + 'MB)');
+    $('#message').html('Click to download <code>' + decodeURIComponent(params['fn']) + '</code> (' + Math.round(blendLength / 10000) / 100 + 'MB)');
     document.getElementById('downloadBlend').addEventListener('click', function(){
-        download(new Blob([blendBuffer]), params['fn']);zzz
+        download(new Blob([blendBuffer]), decodeURIComponent(params['fn']));
     });
 }
 
@@ -67,7 +66,7 @@ window.onload = function(){
             var keyPair = arr[q].split('=');
             params[keyPair[0]] = keyPair[1];
         }
-        document.title = "blendgur: download " + params['fn'];
+        document.title = "blendgur: download " + decodeURIComponent(params['fn']);
         
         var i = 0,
             images = [];
@@ -91,10 +90,6 @@ window.onload = function(){
             if(typeof results[1] == "string"){
                 results = [results];
             }
-            /*var results = event;
-            if(typeof results !== "object"){
-                results = [event];
-            }*/
             imagesHandler(event, results.map(x => x[0]), params['pl']);
         });
     }else{
