@@ -151,7 +151,7 @@ async function blendSelectHandler(event){
         console.error('.blend file too large!');
         $('.uploadMessage').hide();
         toggleZone(false);
-        $('.errorMessage').html('Error uploading file. File size exceeds 25MB<br><button id="reset" onmouseup="resetPage()">Try again</button>');
+        $('.errorMessage').html('Error uploading file. File size exceeds 25MB<br><button class="mainButton" id="reset" onmouseup="resetPage()">Try again</button>');
         $('.errorMessage').show();
     }else{
         if(await checkFileHeader(blendFile) && /\.blend\d*$/.test(fileName)){
@@ -164,7 +164,7 @@ async function blendSelectHandler(event){
             console.error('Invalid .blend File!');
             $('.uploadMessage').hide();
             toggleZone(false);
-            $('.errorMessage').html('Error uploading file. Please check that you have selected a .blend file<br><button id="reset" onmouseup="resetPage()">Try again</button>');
+            $('.errorMessage').html('Error uploading file. Please check that you have selected a .blend file<br><button class="mainButton" id="reset" onmouseup="resetPage()">Try again</button>');
             $('.errorMessage').show();
         }
     }

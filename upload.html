@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>blendgur: upload</title>
+        <meta charset="utf-8">
         <link rel="stylesheet" href="/main.css" type="text/css" />
         <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32"/>
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16"/>
@@ -16,7 +17,7 @@
             <input type="file" class="fileUpload" id="uploadBlend"/>
             <label for="uploadBlend" class="uploadMessage">Drag a <code>.blend</code> file here or click to browse</label>
             <label for="uploadBlend" class="checkMessage" style="display: none">
-                <button id="upload" onclick="uploadBlend(blendFile)">Upload!</button>
+                <button class="mainButton" id="upload" onclick="uploadBlend(blendFile)">Upload!</button>
             </label>
             <label for="uploadBlend" class="loadingMessage" style="display: none; font-size: 2em">Loading</label>
             <label for="uploadBlend" class="successMessage" style="display: none">
