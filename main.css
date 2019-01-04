@@ -134,13 +134,20 @@ button{
     width: 0em;
     margin-right: 2.2em;
 }
-.disclaimer{
-    width: 76%;
+.footer{
+    width: 80%;
     font-size: 0.8em;
     font-family: 'Open Sans', sans-serif;
     color: white;
     margin: auto;
     padding: 1.5em 0;
+}
+.about{
+    width: 32em;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    margin: auto;
+    font-size: 1em;
 }
 #downloadBlend{
     width: 100%;
