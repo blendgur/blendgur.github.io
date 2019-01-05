@@ -39,6 +39,8 @@ function compileBlend(data){
     $('.dropZone').addClass('active');
     $('svg').addClass('active');
     $('#message').html('Click to download <code>' + decodeURIComponent(params['fn']) + '</code> (' + Math.round(blendLength / 10000) / 100 + 'MB)');
+    $('#message').css('word-wrap', 'break-word');
+    $('title').append(decodeURIComponent(params['fn']));
     document.getElementById('downloadBlend').addEventListener('click', function(){
         download(new Blob([blendBuffer]), decodeURIComponent(params['fn']));
     });
