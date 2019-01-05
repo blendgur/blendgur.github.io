@@ -75,7 +75,7 @@ a:hover{
     text-align: center;
     opacity: 0;
     cursor: pointer;
-    z-index: 99;
+    z-index: 98;
     position: relative;
 }
 .dropZone > label, #message{
@@ -117,6 +117,7 @@ a:hover{
     position: fixed;
     top: 48px;
     left: 32px;
+    z-index: 99;
 }
 .backButton{
     background-color: #777;
@@ -130,7 +131,6 @@ a:hover{
     cursor: pointer;
     transition: background-color 0.5s;
     transition: opacity 0.5s;
-    z-index: 80;
 }
 .backButton:hover{
     background-color: #888;
@@ -186,6 +186,7 @@ code{
 }
 #message{
     font-size: 1.5em;
+    word-wrap: break-word;
 }
 @keyframes ellipsis{
     to{
