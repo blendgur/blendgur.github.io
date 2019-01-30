@@ -23,6 +23,7 @@ a:link{
     color: #f67a36;
     transition: color .5s;
     text-decoration: none;
+    text-decoration: underline dashed;
 }
 
 a:visited{
