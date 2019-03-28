@@ -23,7 +23,6 @@ a:link{
     color: #f67a36;
     transition: color .5s;
     text-decoration: none;
-    text-decoration: underline dashed;
 }
 
 a:visited{
@@ -181,6 +180,13 @@ a:hover{
     position: relative;
     display: block;
     z-index: 16;
+}
+.me{
+    font-family: 'Open Sans', sans-serif;
+    color: #ddd;
+    font-size: .8em;
+    display: block;
+    position: relative;
 }
 code{
     font-family: 'Source Code Pro', monospace;
